@@ -13,9 +13,9 @@ public class Product {
     @Basic
     @Column(name = "name")
     private String name;
-    @ManyToOne
-    @Column(name = "booked_by")
-    private Users bookedBy;
+  //  @ManyToOne
+  //  @Column(name = "booked_by")
+  //  private Users bookedBy;
     @Basic
     @Column(name = "booked_until")
     private Date bookedUntil;
@@ -38,13 +38,13 @@ public class Product {
         this.name = name;
     }
 
-    public Users getBookedBy() {
+  /*  public Users getBookedBy() {
         return bookedBy;
     }
 
     public void setBookedBy(Users bookedBy) {
         this.bookedBy = bookedBy;
-    }
+    }*/
 
     public Date getBookedUntil() {
         return bookedUntil;
