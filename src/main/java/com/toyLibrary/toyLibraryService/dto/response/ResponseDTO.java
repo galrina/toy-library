@@ -1,6 +1,5 @@
 package com.toyLibrary.toyLibraryService.dto.response;
 
-
 public class ResponseDTO<T> {
     private T body;
     private Integer statusCode;
