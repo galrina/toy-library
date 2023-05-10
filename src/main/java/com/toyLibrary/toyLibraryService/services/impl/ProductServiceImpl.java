@@ -87,4 +87,8 @@ public class ProductServiceImpl implements ProductService {
         return false;
     }
 
+    public void updateProductBookings(List<Product> products){
+        productRepository.saveAll(products);
+    }
+
 }

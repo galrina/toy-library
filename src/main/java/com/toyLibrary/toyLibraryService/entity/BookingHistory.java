@@ -1,6 +1,5 @@
 package com.toyLibrary.toyLibraryService.entity;
 
-
 import jakarta.persistence.*;
 
 import java.sql.Date;
@@ -24,6 +23,13 @@ public class BookingHistory {
     @Basic
     @Column(name = "booked_until")
     private Date bookedUntil;
+
+    public BookingHistory(Users userId, Product productId, Date bookedFrom, Date bookedUntil) {
+        this.userId = userId;
+        this.productId = productId;
+        this.bookedFrom = bookedFrom;
+        this.bookedUntil = bookedUntil;
+    }
 
     public int getId() {
         return id;
