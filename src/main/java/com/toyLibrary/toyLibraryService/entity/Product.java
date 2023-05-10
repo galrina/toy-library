@@ -14,7 +14,7 @@ public class Product {
     @Column(name = "name")
     private String name;
     @ManyToOne
-    @Column(name = "booked_by")
+    @JoinColumn(name = "booked_by",referencedColumnName = "id")
     private Users bookedBy;
     @Basic
     @Column(name = "booked_until")

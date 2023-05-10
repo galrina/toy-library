@@ -23,6 +23,7 @@ public class ProductController {
     public ResponseDTO<ProductResponseDTO> addProduct(@RequestBody ProductRequestDTO req){
         return productService.addProduct(req);
     }
+
     @PutMapping("/edit")
     public ResponseDTO<ProductResponseDTO> editProduct(@RequestBody ProductRequestDTO req){
         return productService.editProduct(req);

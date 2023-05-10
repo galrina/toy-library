@@ -12,7 +12,7 @@ public class Users {
     private int id;
 
     @ManyToOne
-    @Column(name = "user_type_id")
+    @JoinColumn(name = "user_type_id", referencedColumnName = "id")
     private UserType userType;
     @Basic
     @Column(name = "name")

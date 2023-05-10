@@ -73,4 +73,18 @@ public class ProductServiceImpl implements ProductService {
         productRepository.delete(p);
         return new ResponseDTO<>(HttpStatus.OK.value(), "Product Deleted Successfully!");
     }
+
+    public boolean checkIfProductIsAlreadyBooked(Integer id){
+        Optional<Product> optionalProduct = productRepository.findById(id);
+        if(optionalProduct.isEmpty()){
+            System.out.println("Product does not exist with given ID!");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found with provided ID!");
+        }
+        Product p = optionalProduct.get();
+        if(Objects.nonNull(p.getBookedBy())){
+            return true;
+        }
+        return false;
+    }
+
 }

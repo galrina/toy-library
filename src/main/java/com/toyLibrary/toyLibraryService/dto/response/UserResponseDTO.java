@@ -2,15 +2,20 @@ package com.toyLibrary.toyLibraryService.dto.response;
 
 import com.toyLibrary.toyLibraryService.entity.Users;
 
+import java.util.List;
+
 public class UserResponseDTO {
     private int id;
     private String name;
     private String email;
 
+    private List<ProductResponseDTO> cart;
+
     public UserResponseDTO(Users user) {
         this.id = user.getId();
         this.name = user.getName();
         this.email = user.getEmail();
+        this.cart = user.getCart().stream().map(ProductResponseDTO::new).toList();
     }
 
     public int getId() {
@@ -35,5 +40,13 @@ public class UserResponseDTO {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public List<ProductResponseDTO> getCart() {
+        return cart;
+    }
+
+    public void setCart(List<ProductResponseDTO> cart) {
+        this.cart = cart;
     }
 }
