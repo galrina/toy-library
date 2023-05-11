@@ -12,10 +12,10 @@ public class BookingHistory {
     @Column(name = "id")
     private int id;
     @ManyToOne
-    @Column(name = "user_id")
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
     private Users userId;
     @ManyToOne
-    @Column(name = "product_id")
+    @JoinColumn(name = "product_id", referencedColumnName = "id")
     private Product productId;
     @Basic
     @Column(name = "booked_from")
@@ -23,6 +23,9 @@ public class BookingHistory {
     @Basic
     @Column(name = "booked_until")
     private Date bookedUntil;
+
+    public BookingHistory() {
+    }
 
     public BookingHistory(Users userId, Product productId, Date bookedFrom, Date bookedUntil) {
         this.userId = userId;
