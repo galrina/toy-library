@@ -52,7 +52,7 @@ public class ProductServiceImpl implements ProductService {
         return new ResponseDTO<>(responseDTO, HttpStatus.OK.value(), "Product Created Successfully!");
     }
 
-    public ResponseDTO<ProductResponseDTO> editProduct(ProductRequestDTO req){
+    public ResponseDTO<ProductResponseDTO> editProduct(ProductRequestDTO req, MultipartFile file){
         Optional<Product> optionalProduct = productRepository.findById(req.getId());
         if(optionalProduct.isEmpty()){
 
@@ -61,11 +61,19 @@ public class ProductServiceImpl implements ProductService {
         }
 
         Product p = optionalProduct.get();
+        byte[] fileBytes = null;
+        try{
+            fileBytes = file.getBytes();
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }
+        p.setImage(fileBytes);
         p.setName(req.getName());
         p = productRepository.save(p);
 
         return new ResponseDTO<>(new ProductResponseDTO(p), HttpStatus.OK.value(), "Product edited successfully!");
     }
+
 
     @Transactional
     public ResponseDTO<String> deleteProduct(Integer id){

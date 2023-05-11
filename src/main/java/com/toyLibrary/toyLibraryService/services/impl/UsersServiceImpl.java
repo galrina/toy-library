@@ -24,10 +24,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Random;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -51,14 +48,14 @@ public class UsersServiceImpl implements UsersService {
 
         if(optionalUser.isEmpty()){
             System.out.println("User was not found! Returning Error!");
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Incorrect Email/Password Combination");
+            return new ResponseDTO<>(HttpStatus.BAD_REQUEST.value(), "Incorrect Email/Password Combination");
         }
 
         Users user = optionalUser.get();
         if(!user.getPassword().equals(req.getPassword())){
 
             System.out.println("Incorrect password inputted! Returning Error!");
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Incorrect Email/Password Combination");
+            return new ResponseDTO<>(HttpStatus.BAD_REQUEST.value(), "Incorrect Email/Password Combination");
         }
 
         System.out.println("Details provided verified! Logging in...");
@@ -69,7 +66,7 @@ public class UsersServiceImpl implements UsersService {
         Optional<Users> optionalUser = usersRepository.findByEmail(req.getEmail());
         if(optionalUser.isPresent()){
             System.out.println("User already exists with provided email!");
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "User already exists!");
+            return new ResponseDTO<>(HttpStatus.CONFLICT.value(), "User already exists!");
         }
         Users newUser = new Users();
 
@@ -109,7 +106,7 @@ public class UsersServiceImpl implements UsersService {
     public ResponseDTO<UserResponseDTO> addToCart(Integer userId, Integer productId){
         if(productService.checkIfProductIsAlreadyBooked(productId)){
             System.out.println("Product is already booked! Cannot add to cart!");
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Product is already booked by someone! Cannot add to cart!");
+            return new ResponseDTO<>(HttpStatus.BAD_REQUEST.value(), "Product is already booked by someone! Cannot add to cart!");
         }
         Optional<Users> optionalUser = usersRepository.findById(userId);
         if(optionalUser.isEmpty()){
@@ -154,11 +151,20 @@ public class UsersServiceImpl implements UsersService {
         List<Product> cart = user.getCart();
         List<BookingHistory> bookingHistoryList = new ArrayList<>();
         Date bookedUntil = Date.valueOf(LocalDate.now().plusMonths(1));
-        cart.stream().forEach(p -> {
+        String alreadyBooked = "";
+        for(Product p : cart){
+            if(Objects.nonNull(p.getBookedUntil())){
+                alreadyBooked += p.getName() + "\n";
+                continue;
+            }
             p.setBookedBy(user);
             p.setBookedUntil(bookedUntil);
             bookingHistoryList.add(new BookingHistory(user, p, Date.valueOf(LocalDate.now()), bookedUntil));
-        });
+        }
+        if(!alreadyBooked.equals("")){
+            String finalString = "These items are already booked, please try again later: \n" + alreadyBooked;
+            return new ResponseDTO<>(HttpStatus.CONFLICT.value(), finalString);
+        }
         bookingHistoryRepository.saveAll(bookingHistoryList);
         productService.updateProductBookings(cart);
 

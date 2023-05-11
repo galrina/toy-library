@@ -26,9 +26,9 @@ public class ProductController {
         return productService.addProduct(req,file);
     }
 
-    @PutMapping("/edit")
-    public ResponseDTO<ProductResponseDTO> editProduct(@RequestBody ProductRequestDTO req){
-        return productService.editProduct(req);
+    @PostMapping("/edit")
+    public ResponseDTO<ProductResponseDTO> editProduct(@RequestPart("file") MultipartFile file, @ModelAttribute ProductRequestDTO req){
+        return productService.editProduct(req, file);
     }
 
     @DeleteMapping("/{id}")

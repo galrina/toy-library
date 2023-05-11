@@ -13,7 +13,7 @@ import java.util.List;
 public interface ProductService {
     ResponseDTO<ProductListResponseDTO> getProductList();
     ResponseDTO<ProductResponseDTO> addProduct(ProductRequestDTO req, MultipartFile file);
-    ResponseDTO<ProductResponseDTO> editProduct(ProductRequestDTO req);
+    ResponseDTO<ProductResponseDTO> editProduct(ProductRequestDTO req, MultipartFile file);
     ResponseDTO<String> deleteProduct(Integer i);
     boolean checkIfProductIsAlreadyBooked(Integer id);
     void updateProductBookings(List<Product> products);
