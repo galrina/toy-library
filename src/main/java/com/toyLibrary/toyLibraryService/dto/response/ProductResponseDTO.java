@@ -11,11 +11,14 @@ public class ProductResponseDTO {
     private UserResponseDTO bookedBy;
     private Date bookedUntil;
 
+    private byte[] image;
+
     public ProductResponseDTO(Product p) {
         this.id = p.getId();
         this.name = p.getName();
         this.bookedBy = Objects.nonNull(p.getBookedBy()) ? new UserResponseDTO(p.getBookedBy()) : null;
         this.bookedUntil = p.getBookedUntil();
+        this.image = p.getImage();
     }
 
     public int getId() {
@@ -48,5 +51,13 @@ public class ProductResponseDTO {
 
     public void setBookedUntil(Date bookedUntil) {
         this.bookedUntil = bookedUntil;
+    }
+
+    public byte[] getImage() {
+        return image;
+    }
+
+    public void setImage(byte[] file) {
+        this.image = file;
     }
 }

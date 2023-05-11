@@ -13,8 +13,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.io.IOException;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
@@ -34,10 +36,17 @@ public class ProductServiceImpl implements ProductService {
         return new ResponseDTO<>(response, HttpStatus.OK.value(), "Fetched Product List Successfully!");
     }
 
-    public ResponseDTO<ProductResponseDTO> addProduct(ProductRequestDTO req){
+    public ResponseDTO<ProductResponseDTO> addProduct(ProductRequestDTO req, MultipartFile file){
+        byte[] fileBytes = null;
+        try{
+            fileBytes = file.getBytes();
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }
 
         Product p = new Product();
         p.setName(req.getName());
+        p.setImage(fileBytes);
         p = productRepository.save(p);
         ProductResponseDTO responseDTO = new ProductResponseDTO(p);
         return new ResponseDTO<>(responseDTO, HttpStatus.OK.value(), "Product Created Successfully!");
@@ -48,7 +57,7 @@ public class ProductServiceImpl implements ProductService {
         if(optionalProduct.isEmpty()){
 
             System.out.println("Product does not exist with given ID!");
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found with provided ID!");
+            return new ResponseDTO<>(HttpStatus.NOT_FOUND.value(), "Product not found with provided ID!");
         }
 
         Product p = optionalProduct.get();
@@ -59,19 +68,19 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Transactional
-    public ResponseDTO<String> deleteProduct(Integer i){
+    public ResponseDTO<String> deleteProduct(Integer id){
 
-        Optional<Product> optionalProduct = productRepository.findById(i);
+        Optional<Product> optionalProduct = productRepository.findById(id);
         if(optionalProduct.isEmpty()){
 
             System.out.println("Product does not exist with given ID!");
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found with provided ID!");
+            return new ResponseDTO<>(HttpStatus.NOT_FOUND.value(), "Product not found with provided ID!");
         }
         Product p = optionalProduct.get();
-        if(Objects.nonNull(p.getBookedBy())){
+        if(checkIfProductIsAlreadyBooked(id)){
 
             System.out.println("Product currently booked by a customer!");
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "Product is currently booked by a customer! Cannot delete!");
+            return new ResponseDTO<>(HttpStatus.CONFLICT.value(), "Product is currently booked by a customer! Cannot delete!");
         }
 
         productRepository.delete(p);

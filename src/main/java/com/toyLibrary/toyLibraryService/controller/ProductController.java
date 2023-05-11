@@ -7,9 +7,11 @@ import com.toyLibrary.toyLibraryService.dto.response.ResponseDTO;
 import com.toyLibrary.toyLibraryService.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/product")
+@CrossOrigin(origins = "http://localhost:3000")
 public class ProductController {
     @Autowired
     ProductService productService;
@@ -20,8 +22,8 @@ public class ProductController {
     }
 
     @PostMapping("/create")
-    public ResponseDTO<ProductResponseDTO> addProduct(@RequestBody ProductRequestDTO req){
-        return productService.addProduct(req);
+    public ResponseDTO<ProductResponseDTO> addProduct(@RequestPart("file") MultipartFile file, @ModelAttribute ProductRequestDTO req) {
+        return productService.addProduct(req,file);
     }
 
     @PutMapping("/edit")

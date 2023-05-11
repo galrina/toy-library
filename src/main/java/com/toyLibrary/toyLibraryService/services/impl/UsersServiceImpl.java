@@ -13,6 +13,7 @@ import com.toyLibrary.toyLibraryService.entity.Users;
 import com.toyLibrary.toyLibraryService.repository.BookingHistoryRepository;
 import com.toyLibrary.toyLibraryService.repository.UserTypeRepository;
 import com.toyLibrary.toyLibraryService.repository.UsersRepository;
+import com.toyLibrary.toyLibraryService.services.BookingHistoryService;
 import com.toyLibrary.toyLibraryService.services.ProductService;
 import com.toyLibrary.toyLibraryService.services.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -113,7 +114,7 @@ public class UsersServiceImpl implements UsersService {
         Optional<Users> optionalUser = usersRepository.findById(userId);
         if(optionalUser.isEmpty()){
             System.out.println("User was not found! Returning Error!");
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found with provided ID");
+            return new ResponseDTO<>(HttpStatus.BAD_REQUEST.value(), "User not found with provided ID");
         }
         Users user = optionalUser.get();
         List<Product> currentCart = user.getCart();
@@ -130,7 +131,7 @@ public class UsersServiceImpl implements UsersService {
         Optional<Users> optionalUser = usersRepository.findById(userId);
         if(optionalUser.isEmpty()){
             System.out.println("User was not found! Returning Error!");
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found with provided ID");
+            return new ResponseDTO(HttpStatus.BAD_REQUEST.value(), "User not found with provided ID");
         }
         Users user = optionalUser.get();
         List<Product> currentCart = user.getCart();
@@ -147,7 +148,7 @@ public class UsersServiceImpl implements UsersService {
         Optional<Users> optionalUser = usersRepository.findById(userId);
         if(optionalUser.isEmpty()){
             System.out.println("User was not found! Returning Error!");
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found with provided ID");
+            return new ResponseDTO<>(HttpStatus.BAD_REQUEST.value(), "User not found with provided ID");
         }
         Users user = optionalUser.get();
         List<Product> cart = user.getCart();

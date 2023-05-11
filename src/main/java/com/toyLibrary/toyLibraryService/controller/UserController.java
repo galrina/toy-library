@@ -4,7 +4,6 @@ import com.toyLibrary.toyLibraryService.dto.request.LoginRequestDTO;
 import com.toyLibrary.toyLibraryService.dto.request.RegistrationRequestDTO;
 import com.toyLibrary.toyLibraryService.dto.response.LoginResponseDTO;
 import com.toyLibrary.toyLibraryService.dto.response.ResponseDTO;
-import com.toyLibrary.toyLibraryService.dto.response.ResponseDTO;
 import com.toyLibrary.toyLibraryService.dto.response.UserResponseDTO;
 import com.toyLibrary.toyLibraryService.services.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +39,6 @@ public class UserController {
     public ResponseDTO<String> checkoutCart(@PathVariable("userId") Integer userId){
         return usersService.checkoutCart(userId);
     }
-
 
 }
 
