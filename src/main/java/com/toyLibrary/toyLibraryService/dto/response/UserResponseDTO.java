@@ -8,13 +8,14 @@ public class UserResponseDTO {
     private int id;
     private String name;
     private String email;
-
+    private String userType;
     private List<ProductResponseDTO> cart;
 
     public UserResponseDTO(Users user) {
         this.id = user.getId();
         this.name = user.getName();
         this.email = user.getEmail();
+        this.userType = user.getUserType().getName();
         this.cart = user.getCart().stream().map(ProductResponseDTO::new).toList();
     }
 
@@ -40,6 +41,14 @@ public class UserResponseDTO {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getUserType() {
+        return userType;
+    }
+
+    public void setUserType(String userType) {
+        this.userType = userType;
     }
 
     public List<ProductResponseDTO> getCart() {

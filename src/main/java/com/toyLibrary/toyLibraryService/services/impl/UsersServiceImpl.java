@@ -161,7 +161,6 @@ public class UsersServiceImpl implements UsersService {
         bookingHistoryRepository.saveAll(bookingHistoryList);
         productService.updateProductBookings(cart);
 
-        // Need to reset cart
         user.setCart(new ArrayList<>());
         usersRepository.save(user);
 
